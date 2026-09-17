@@ -1,0 +1,9 @@
+# Rave Laboratory: python -m pip install -r requirements.txt   (Python 3.10 or newer)
+pygame-ce>=2.5
+numpy>=1.24
+mutagen>=1.47
+# ffmpeg for video backgrounds, the waveform strip, sync checks and Lab mode imports.
+# Not needed if ffmpeg is already installed on the PATH (winget/brew/apt); harmless otherwise.
+imageio-ffmpeg>=0.5
+# Optional: the Claude API coach/Lab assistant ("claude" provider). Claude Code and Ollama need nothing extra.
+# anthropic>=1.0
