@@ -1,6 +1,8 @@
 # Packages Rave Laboratory with its own Python for Windows, macOS and Linux, then test-launches each package.
 # Push a tag like v1.0.0 (or run it by hand) and the packages are attached to the release.
 name: build
+permissions:
+  contents: write        # so the release job can attach the packages
 on:
   push:
     tags: ['v*']
