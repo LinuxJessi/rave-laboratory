@@ -19,6 +19,49 @@ Suggestions are welcome there too.
 3. **Find songs and judge difficulty before you play.** Search from the pad, folders for favorites, most played and
    recently played, and a song panel with foot rating, Sensory score, groove radar, BPM and length for every chart.
 
+## What it does
+
+**Play feel**
+- One read speed for every song. The multiplier is worked out from each song's dominant BPM, not its highest, so a
+  BPM spike or a slowdown gimmick does not change how the rest of the song scrolls. Constant and fixed-multiplier
+  modes are there too.
+- Freeze arrows pin to the receptor once you hit the head and survive a brief lift (350 ms grace) and sensor flicker
+  (a release-and-press within 30 ms counts as held). Failed freezes scroll away from where they failed.
+- Warps, negative stops, negative BPMs, delays and DWI 24th notes are read correctly, so charts stay with the music
+  to the end.
+- Each song's chart is checked against its audio and, if it is out of sync, shifted at play time. Simfiles are never
+  edited, so OutFox is unaffected.
+- Arrow timing and judge timing are separate offsets, so the arrows can be placed where they look right and the
+  judging where it feels right.
+
+**Frame rate**
+- 100 fps at 1080p and 1440p on a 100 Hz display with VSync, measured with `--bench`, which prints frame pacing.
+- Video backgrounds decode in a separate ffmpeg process at half size, paced to the song clock, so the game thread
+  only draws. Audio analysis (sync check, waveform) also runs in separate processes; the music never stutters.
+- Render resolution (720 to 1440), VSync on or off, and an FPS cap are settings.
+
+**Training aids** (F1 > Training, saved per player)
+- A waveform strip beside the arrows, scrolling with them: bar width is loudness, colour is pitch, with tabs showing
+  the current BPM, the sounding note and the song's key.
+- A step timing meter at the bottom of the screen: a tick for every step, early to the left, late to the right, and
+  a running average in milliseconds.
+- Measure lines with measure numbers, 8th-note lines, receptors and arrows that flash on the beat, and a glow on a
+  receptor during the last beat before its next arrow.
+- Every run is logged to `data/profiles/<player>/runs/` with the offset of every step and every press and release,
+  and the results screen shows a timing histogram, median, mean, spread, FAST/SLOW counts and an offset suggestion.
+- Song length is measured from the audio (with an ffmpeg fallback when the tags are wrong) and shown in the song
+  panel with BPM range, steps, jumps and freezes; a progress bar runs along the bottom during play.
+
+**Loading**
+- The song index is cached. Only songs whose files changed are read again, so after the first start the list is up
+  in seconds for 2,000+ songs. Indexing runs in the background while the menu is usable, and banners and backgrounds
+  load off the main thread.
+
+**Who's playing?**
+- The first screen is a row of player cards with plays, songs, AA count and last played, plus New player (name typed
+  from the pad), Lab mode, Set up pad and Quit. Every OutFox local profile is imported as a card the first time, and
+  again whenever OutFox has been played since.
+
 ## Screenshots
 
 | | |
@@ -26,6 +69,7 @@ Suggestions are welcome there too.
 | ![Song select](docs/screenshots/02-song-select.png) Song select: ladder, radar, BPM, your best | ![Gameplay](docs/screenshots/03-gameplay-pink-pony-club.png) Play: waveform strip, measure lines, video background |
 | ![Results](docs/screenshots/06-results.png) Results: judgments and a timing histogram | ![Lab mode](docs/screenshots/07-lab-mode.png) Lab mode: chart your own song with the assistant |
 | ![Design mode](docs/screenshots/08-design-mode.png) F1 Design Mode: every setting, live, mid-song | ![Set up pad](docs/screenshots/09-set-up-pad.png) Set up pad: step on each panel |
+| ![Who's playing](docs/screenshots/01-whos-playing.png) Who's playing?: player cards, Lab mode, pad setup | ![Gameplay](docs/screenshots/04-gameplay-super-heroine.png) Play: timing meter, beat flashes, measure numbers |
 
 ## Install and run
 
